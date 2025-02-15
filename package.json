@@ -10,8 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-navigation/bottom-tabs": "^6.x",
+    "@react-navigation/native": "^6.x",
     "react": "18.2.0",
-    "react-native": "0.73.8"
+    "react-native": "0.73.8",
+    "react-native-safe-area-context": "^5.2.0",
+    "react-native-screens": "^4.6.0",
+    "react-native-webview": "^13.13.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
