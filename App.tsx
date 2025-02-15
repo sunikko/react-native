@@ -1,11 +1,31 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {View} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeScreen from './screens/HomeScreen';
+import ShoppingScreen from './screens/ShoppingScreen';
+import {RouteNames} from './routes';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import BrowserScreen from './screens/BrowserScreen';
+
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const HomeTab = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name={RouteNames.HOME} component={HomeScreen} />
+      <Tab.Screen name={RouteNames.SHOPPING} component={ShoppingScreen} />
+    </Tab.Navigator>
+  );
+};
 
 const App = () => {
   return (
     <NavigationContainer>
-      <View />
+      <Stack.Navigator>
+        <Stack.Screen name={RouteNames.HOMETAB} component={HomeTab} />
+        <Stack.Screen name={RouteNames.BROWSER} component={BrowserScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
