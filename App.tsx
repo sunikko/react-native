@@ -23,7 +23,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name={RouteNames.HOMETAB} component={HomeTab} />
+        <Stack.Screen
+          name={RouteNames.HOMETAB}
+          component={HomeTab}
+          options={{headerShown: false}}
+        />
         <Stack.Screen name={RouteNames.BROWSER} component={BrowserScreen} />
       </Stack.Navigator>
     </NavigationContainer>
