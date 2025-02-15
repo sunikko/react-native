@@ -1,8 +1,11 @@
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
-import {RouteNames} from '../routes';
+import {RouteNames, RootStackParamList} from '../routes';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
-const ShoppingScreen = ({navigation}) => {
+type Props = NativeStackScreenProps<RootStackParamList>;
+
+const ShoppingScreen = ({navigation}: Props) => {
   return (
     <View>
       <Text>Shopping Screen</Text>

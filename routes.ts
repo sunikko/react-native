@@ -1,6 +1,11 @@
 export const RouteNames = {
-  HOME: 'Home',
-  SHOPPING: 'Shopping',
-  BROWSER: 'Browser',
-  HOMETAB: 'Home-tab',
+  HOME: 'Home' as const,
+  SHOPPING: 'Shopping' as const,
+  BROWSER: 'Browser' as const,
+  HOMETAB: 'Home-tab' as const,
+};
+
+export type RootStackParamList = {
+  [RouteNames.HOMETAB]: undefined; // no params needed
+  [RouteNames.BROWSER]: undefined;
 };
