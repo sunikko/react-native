@@ -1,8 +1,8 @@
 export const RouteNames = {
-  HOME: 'Home' as const,
-  SHOPPING: 'Shopping' as const,
-  BROWSER: 'Browser' as const,
-  HOMETAB: 'Home-tab' as const,
+  HOME: 'home' as const,
+  SHOPPING: 'shopping' as const,
+  BROWSER: 'browser' as const,
+  HOMETAB: 'home-tab' as const,
 };
 
 // Define the types for the navigation stack

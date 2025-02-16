@@ -6,15 +6,36 @@ import ShoppingScreen from './screens/ShoppingScreen';
 import {RouteNames, RootStackParamList} from './routes';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BrowserScreen from './screens/BrowserScreen';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const HomeIcon = ({color, focused}: {color: string; focused: boolean}) => {
+  const iconeName = focused ? 'home' : 'home-outline';
+  return <MaterialCommunityIcons name={iconeName} size={26} color={color} />;
+};
+
 const HomeTab = () => {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name={RouteNames.HOME} component={HomeScreen} />
-      <Tab.Screen name={RouteNames.SHOPPING} component={ShoppingScreen} />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: 'black',
+        },
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'gray',
+      }}>
+      <Tab.Screen
+        name={RouteNames.HOME}
+        component={HomeScreen}
+        options={{tabBarLabel: 'Dashboard', tabBarIcon: HomeIcon}}
+      />
+      <Tab.Screen
+        name={RouteNames.SHOPPING}
+        component={ShoppingScreen}
+        options={{tabBarLabel: 'Shop'}}
+      />
     </Tab.Navigator>
   );
 };
