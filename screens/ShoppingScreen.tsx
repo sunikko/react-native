@@ -12,7 +12,12 @@ const ShoppingScreen = ({navigation}: Props) => {
   return (
     <View>
       <Text>Shopping Screen</Text>
-      <TouchableOpacity onPress={() => navigation.navigate(RouteNames.BROWSER)}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(RouteNames.BROWSER, {
+            initialUrl: 'https://m.naver.com',
+          })
+        }>
         <Text>Go to Browser</Text>
       </TouchableOpacity>
       <MaterialCommunityIcons name="shopping" size={24} color="black" />

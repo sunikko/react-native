@@ -9,5 +9,5 @@ export const RouteNames = {
 // Params are not needed for the HomeTab, so we use undefined for the value of the key
 export type RootStackParamList = {
   [RouteNames.HOMETAB]: undefined; // no params needed
-  [RouteNames.BROWSER]: undefined;
+  [RouteNames.BROWSER]: {initialUrl?: string}; // params are optional
 };
