@@ -1,7 +1,11 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
+import {RouteNames, RootStackParamList} from '../routes';
+
+type Props = NativeStackScreenProps<RootStackParamList>;
 
 const styles = StyleSheet.create({
   safearea: {
@@ -14,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: Props) => {
   return (
     <SafeAreaView style={styles.safearea}>
       <WebView
@@ -30,6 +34,7 @@ const HomeScreen = () => {
             return true;
           }
           if (request.url != null && request.url.startsWith('https://')) {
+            navigation.navigate(RouteNames.BROWSER, {initialUrl: request.url});
             return false;
           }
           return true;
