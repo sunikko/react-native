@@ -1,28 +1,68 @@
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import {RouteNames, RootStackParamList} from '../routes';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import Icon from '@react-native-vector-icons/fontawesome';
+import React, {useCallback, useRef, useState} from 'react';
+import {RefreshControl, ScrollView, StyleSheet} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import WebView from 'react-native-webview';
+import {RouteNames, RootStackParamList} from '../routes';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
-// MaterialCommunityIcons.loadFont();
+const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  webview: {
+    marginTop: 20,
+  },
+  contentContainerStyle: {
+    flex: 1,
+  },
+});
+
+const SHOPPING_HOME_URL = 'https://shopping.naver.com/ns/home';
+
 const ShoppingScreen = ({navigation}: Props) => {
+  //prevent re-generate RefreshControl
+  const onRefresh = useCallback(() => {
+    console.log('onRefresh');
+  }, []);
+  const webViewRef = useRef<WebView>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
   return (
-    <View>
-      <Text>Shopping Screen</Text>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate(RouteNames.BROWSER, {
-            initialUrl: 'https://m.naver.com',
-          })
+    <SafeAreaView style={styles.safearea}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainerStyle}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Text>Go to Browser</Text>
-      </TouchableOpacity>
-      <MaterialCommunityIcons name="shopping" size={24} color="black" />
-      {/* <Icon name="rocket" size={30} color="#900" /> */}
-    </View>
+        <WebView
+          ref={webViewRef}
+          source={{uri: SHOPPING_HOME_URL}}
+          style={styles.webview}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          onShouldStartLoadWithRequest={request => {
+            if (
+              request.url.startsWith(SHOPPING_HOME_URL) ||
+              request.mainDocumentURL?.startsWith(SHOPPING_HOME_URL)
+            ) {
+              return true;
+            }
+            if (request.url != null && request.url.startsWith('https://')) {
+              console.log(request.url);
+              navigation.navigate(RouteNames.BROWSER, {
+                initialUrl: request.url,
+              });
+              return false;
+            }
+            return true;
+          }}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
