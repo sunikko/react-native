@@ -22,14 +22,14 @@ const HomeScreen = ({navigation}: Props) => {
   return (
     <SafeAreaView style={styles.safearea}>
       <WebView
-        source={{uri: 'https://www.naver.com'}}
-        style={styles.webview}
+        source={{uri: 'https://m.naver.com'}}
+        // style={styles.webview}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         onShouldStartLoadWithRequest={request => {
           if (
-            request.url.startsWith('hppts://m.naver.com') ||
-            request.mainDocumentURL?.startsWith('hppts://m.naver.com')
+            request.url.startsWith('https://m.naver.com') ||
+            request.mainDocumentURL?.startsWith('https://m.naver.com')
           ) {
             return true;
           }

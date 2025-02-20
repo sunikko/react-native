@@ -1,9 +1,10 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useMemo, useRef, useState} from 'react';
-import {Animated, StyleSheet, Text, View} from 'react-native';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
 import {RootStackParamList} from '../routes';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>;
 
@@ -32,9 +33,54 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'red',
   },
+  navigator: {
+    flexDirection: 'row',
+    backgroundColor: 'black',
+    paddingVertical: 10,
+    paddingHorizontal: 40,
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: 30,
+    height: 30,
+    padding: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homebuttonIconOutline: {
+    borderWidth: 1,
+    borderColor: 'white',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  homebuttonIconText: {
+    color: 'white',
+  },
 });
 
-const BrowserScreen = ({route}: Props) => {
+const NavButton = ({
+  iconName,
+  disabled,
+  onPress,
+}: {
+  iconName: string;
+  disabled?: boolean;
+  onPress?: () => void;
+}) => {
+  const color = disabled ? 'gray' : 'white';
+  return (
+    <TouchableOpacity
+      style={styles.button}
+      disabled={disabled}
+      onPress={onPress}>
+      <MaterialCommunityIcons name={iconName} size={24} color={color} />
+    </TouchableOpacity>
+  );
+};
+
+const BrowserScreen = ({route, navigation}: Props) => {
   const initialUrl = route.params?.initialUrl ?? 'https://m.naver.com'; // default url
   const [url, setUrl] = useState(initialUrl);
   const urlTitle = useMemo(
@@ -43,6 +89,9 @@ const BrowserScreen = ({route}: Props) => {
   );
   const progressAnim = useRef(new Animated.Value(0)).current; // Animated.Value created;0 is the initial value; and saved while keeping the reference
   const [isLoading, setIsLoading] = useState(false);
+  const webViewRef = useRef<WebView>(null);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [canGoForward, setCanGoForward] = useState(false);
 
   return (
     <SafeAreaView style={styles.safearea}>
@@ -65,9 +114,12 @@ const BrowserScreen = ({route}: Props) => {
         </View>
       )}
       <WebView
+        ref={webViewRef}
         source={{uri: initialUrl}}
         style={styles.webview}
         onNavigationStateChange={event => {
+          setCanGoBack(event.canGoBack);
+          setCanGoForward(event.canGoForward);
           setUrl(event.url);
         }}
         onLoadStart={() => {
@@ -81,6 +133,37 @@ const BrowserScreen = ({route}: Props) => {
           progressAnim.setValue(0);
         }}
       />
+      <View style={styles.navigator}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <View style={styles.homebuttonIconOutline}>
+            <Text style={styles.homebuttonIconText}>N</Text>
+          </View>
+        </TouchableOpacity>
+        <NavButton
+          iconName="arrow-left"
+          disabled={!canGoBack}
+          onPress={() => {
+            webViewRef.current?.goBack();
+          }}
+        />
+        <NavButton
+          iconName="arrow-right"
+          disabled={!canGoForward}
+          onPress={() => {
+            webViewRef.current?.goForward();
+          }}
+        />
+        <NavButton
+          iconName="refresh"
+          onPress={() => {
+            webViewRef.current?.reload();
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };
