@@ -7,6 +7,7 @@ import {RouteNames, RootStackParamList} from './routes';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BrowserScreen from './screens/BrowserScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import LoginButton from './components/LoginButton';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -53,7 +54,13 @@ const App = () => {
         <Stack.Screen
           name={RouteNames.HOMETAB}
           component={HomeTab}
-          options={{headerShown: false}}
+          options={{
+            title: '',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerRight: LoginButton,
+          }}
         />
         <Stack.Screen
           name={RouteNames.BROWSER}
