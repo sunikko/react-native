@@ -24,11 +24,13 @@ const styles = StyleSheet.create({
 const SHOPPING_HOME_URL = 'https://shopping.naver.com/ns/home';
 
 const ShoppingScreen = ({navigation}: Props) => {
+  const webViewRef = useRef<WebView>(null);
   //prevent re-generate RefreshControl
   const onRefresh = useCallback(() => {
-    console.log('onRefresh');
+    setRefreshing(true);
+    webViewRef.current?.reload();
   }, []);
-  const webViewRef = useRef<WebView>(null);
+
   const [refreshing, setRefreshing] = useState(false);
 
   return (
@@ -60,6 +62,11 @@ const ShoppingScreen = ({navigation}: Props) => {
             }
             return true;
           }}
+          onLoad={() => {
+            setRefreshing(false);
+          }}
+          renderLoading={() => <></>}
+          startInLoadingState={true}
         />
       </ScrollView>
     </SafeAreaView>
