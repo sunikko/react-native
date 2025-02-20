@@ -16,6 +16,11 @@ const HomeIcon = ({color, focused}: {color: string; focused: boolean}) => {
   return <MaterialCommunityIcons name={iconeName} size={26} color={color} />;
 };
 
+const ShoppingIcon = ({color, focused}: {color: string; focused: boolean}) => {
+  const iconeName = focused ? 'shopping' : 'shopping-outline';
+  return <MaterialCommunityIcons name={iconeName} size={26} color={color} />;
+};
+
 const HomeTab = () => {
   return (
     <Tab.Navigator
@@ -35,7 +40,7 @@ const HomeTab = () => {
       <Tab.Screen
         name={RouteNames.SHOPPING}
         component={ShoppingScreen}
-        options={{tabBarLabel: 'Shop'}}
+        options={{tabBarLabel: 'Shop', tabBarIcon: ShoppingIcon}}
       />
     </Tab.Navigator>
   );
