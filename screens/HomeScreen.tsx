@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   webview: {
-    marginTop: 20,
+    // marginTop: 20,
   },
 });
 

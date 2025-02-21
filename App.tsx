@@ -8,6 +8,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BrowserScreen from './screens/BrowserScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoginButton from './components/LoginButton';
+import LoginScreen from './screens/LoginScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -66,6 +67,15 @@ const App = () => {
           name={RouteNames.BROWSER}
           component={BrowserScreen}
           options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={RouteNames.LOGIN}
+          component={LoginScreen}
+          options={{
+            headerStyle: {backgroundColor: 'black'},
+            headerTintColor: 'white',
+            title: '',
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

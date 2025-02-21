@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
   },
   webview: {
-    marginTop: 20,
+    // marginTop: 20,
   },
   urlContainer: {
     backgroundColor: 'black',
