@@ -1,18 +1,30 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {TouchableOpacity} from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {RootStackParamList, RouteNames} from '../routes';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-
-const isLoggedIn = false;
-const iconName = isLoggedIn ? 'logout' : 'login';
+import CookieManager from '@react-native-cookies/cookies';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const LoginButton = () => {
   const navigation = useNavigation<Props>();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const iconName = isLoggedIn ? 'logout' : 'login';
+
+  useEffect(() => {
+    CookieManager.get('https://.naver.com', true).then(cookie => {
+      console.log(cookie);
+      if (cookie.NID_SES) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  }, []);
 
   const onPressLogin = useCallback(() => {
     navigation.navigate(RouteNames.LOGIN);
