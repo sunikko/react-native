@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect} from 'react';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,20 +11,23 @@ type Props = NativeStackScreenProps<RootStackParamList>;
 
 const LoginButton = () => {
   const navigation = useNavigation<Props>();
+  const isFocused = useIsFocused();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const iconName = isLoggedIn ? 'logout' : 'login';
 
   useEffect(() => {
-    CookieManager.get('https://.naver.com', true).then(cookie => {
-      console.log(cookie);
-      if (cookie.NID_SES) {
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    });
-  }, []);
+    console.log('isFocused', isFocused);
+    if (isFocused) {
+      CookieManager.get('https://.naver.com', true).then(cookie => {
+        if (cookie.NID_SES) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      });
+    }
+  }, [isFocused]);
 
   const onPressLogin = useCallback(() => {
     navigation.navigate(RouteNames.LOGIN);
