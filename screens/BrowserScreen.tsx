@@ -85,6 +85,16 @@ const NavButton = ({
   );
 };
 
+const DISABLE_PINCH_ZOOM = `(function() {
+  const meta = document.createElement('meta');
+  meta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+  meta.setAttribute('name', 'viewport');
+  document.getElementsByTagName('head')[0].appendChild(meta);
+
+  document.body.style['user-select'] = 'none';
+  document.body.style['-webkit-user-select'] = 'none';
+})();`;
+
 const BrowserScreen = ({route, navigation}: Props) => {
   const context = useContext(WebViewContext);
   const initialUrl = route.params?.initialUrl ?? 'https://m.naver.com'; // default url
@@ -142,6 +152,9 @@ const BrowserScreen = ({route, navigation}: Props) => {
           setIsLoading(false);
           progressAnim.setValue(0);
         }}
+        injectedJavaScript={DISABLE_PINCH_ZOOM}
+        onMessage={() => {}}
+        allowsLinkPreview={false}
       />
       <View style={styles.navigator}>
         <TouchableOpacity
