@@ -13,6 +13,7 @@ import WebView from 'react-native-webview';
 import {RootStackParamList} from '../routes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {WebViewContext} from '../components/WebViewProvider';
+import {useBackHandler} from '@react-native-community/hooks';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>;
 
@@ -108,6 +109,14 @@ const BrowserScreen = ({route, navigation}: Props) => {
   const webViewRef = useRef<WebView | null>(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
+
+  useBackHandler(() => {
+    if (canGoBack) {
+      webViewRef.current?.goBack();
+      return true;
+    }
+    return false;
+  });
 
   return (
     <SafeAreaView style={styles.safearea}>
