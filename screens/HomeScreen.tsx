@@ -1,29 +1,31 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
 import {RouteNames, RootStackParamList} from '../routes';
+import {WebViewContext} from '../components/WebViewProvider';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const styles = StyleSheet.create({
   safearea: {
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-  webview: {
-    // marginTop: 20,
   },
 });
 
 const HomeScreen = ({navigation}: Props) => {
+  const context = useContext(WebViewContext);
+
   return (
-    <SafeAreaView style={styles.safearea}>
+    <SafeAreaView style={styles.safearea} edges={['left', 'right', 'bottom']}>
       <WebView
+        ref={ref => {
+          if (ref != null) {
+            context?.addWebView(ref);
+          }
+        }}
         source={{uri: 'https://m.naver.com'}}
-        // style={styles.webview}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         onShouldStartLoadWithRequest={request => {

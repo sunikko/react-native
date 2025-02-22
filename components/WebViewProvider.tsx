@@ -25,4 +25,4 @@ const WebViewProvider = ({children}: {children: ReactNode}) => {
   );
 };
 
-export default WebViewProvider;
+export {WebViewProvider, WebViewContext};

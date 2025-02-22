@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useContext, useMemo, useRef, useState} from 'react';
 import {
   Animated,
   Share,
@@ -12,6 +12,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import WebView from 'react-native-webview';
 import {RootStackParamList} from '../routes';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {WebViewContext} from '../components/WebViewProvider';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'browser'>;
 
@@ -19,9 +20,6 @@ const styles = StyleSheet.create({
   safearea: {
     flex: 1,
     backgroundColor: 'black',
-  },
-  webview: {
-    // marginTop: 20,
   },
   urlContainer: {
     backgroundColor: 'black',
@@ -88,6 +86,7 @@ const NavButton = ({
 };
 
 const BrowserScreen = ({route, navigation}: Props) => {
+  const context = useContext(WebViewContext);
   const initialUrl = route.params?.initialUrl ?? 'https://m.naver.com'; // default url
   const [url, setUrl] = useState(initialUrl);
   const urlTitle = useMemo(
@@ -96,7 +95,7 @@ const BrowserScreen = ({route, navigation}: Props) => {
   );
   const progressAnim = useRef(new Animated.Value(0)).current; // Animated.Value created;0 is the initial value; and saved while keeping the reference
   const [isLoading, setIsLoading] = useState(false);
-  const webViewRef = useRef<WebView>(null);
+  const webViewRef = useRef<WebView | null>(null);
   const [canGoBack, setCanGoBack] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
 
@@ -121,9 +120,13 @@ const BrowserScreen = ({route, navigation}: Props) => {
         </View>
       )}
       <WebView
-        ref={webViewRef}
+        ref={ref => {
+          webViewRef.current = ref;
+          if (ref != null) {
+            context?.addWebView(ref);
+          }
+        }}
         source={{uri: initialUrl}}
-        style={styles.webview}
         onNavigationStateChange={event => {
           setCanGoBack(event.canGoBack);
           setCanGoForward(event.canGoForward);
